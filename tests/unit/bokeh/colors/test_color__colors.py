@@ -364,6 +364,36 @@ class Test_RGB:
         assert round(bcc.RGB(128, 128, 128).brightness, 2) == 0.5
         assert round(bcc.RGB(255, 255, 255).brightness, 2) == 1.0
 
+
+    def test_out_of_range_hsl_values(self):
+        with pytest.raises(ValueError):
+            # Provide HSL values with hue greater than 360
+            bcc.HSL(400, 0.5, 0.5)
+
+        with pytest.raises(ValueError):
+            # Provide HSL values with saturation greater than 1
+            bcc.HSL(200, 1.5, 0.5)
+
+        with pytest.raises(ValueError):
+            # Provide HSL values with lightness greater than 1
+            bcc.HSL(200, 0.5, 1.2)
+
+
+
+    def test_out_of_range_rgb_values(self):
+        with pytest.raises(ValueError):
+            # Provide RGB values greater than 255
+            bcc.RGB(300, 200, 150)
+
+        with pytest.raises(ValueError):
+            # Provide RGB values less than 0
+            bcc.RGB(-10, 100, 50)
+
+
+
+
+
+
 #-----------------------------------------------------------------------------
 # Dev API
 #-----------------------------------------------------------------------------
