@@ -179,6 +179,36 @@ def test_from_networkx_with_missing_layout(nx) -> None:
         assert renderer.layout_provider.graph_layout[0] == missing_fixed_layout[0]
         assert renderer.layout_provider.graph_layout[1] == missing_fixed_layout[1]
 
+
+def test_out_of_range_alpha_values():
+   with pytest.raises(ValueError):
+       # Provide alpha value greater than 1
+       bokeh.models.glyphs.Circle(x=0, y=0, radius=1, fill_alpha=1.5)
+
+   with pytest.raises(ValueError):
+       # Provide alpha value less than 0
+       bokeh.models.glyphs.Circle(x=0, y=0, radius=1, fill_alpha=-0.2)
+
+
+def test_out_of_range_angle_values():
+   with pytest.raises(ValueError):
+       # Provide angle value greater than 360
+       bokeh.models.glyphs.Wedge(x=0, y=0, radius=1, start_angle=0, end_angle=400)
+
+   with pytest.raises(ValueError):
+       # Provide angle value less than 0
+       bokeh.models.glyphs.Wedge(x=0, y=0, radius=1, start_angle=-10, end_angle=200)
+
+
+def test_invalid_border_radius_values():
+   with pytest.raises(ValueError):
+       # Provide border radius value less than 0
+       bokeh.models.glyphs.Quad(left=0, right=1, top=1, bottom=0, border_radius=-0.1)
+
+   with pytest.raises(ValueError):
+       # Provide border radius value greater than (right-left)/2 or (top-bottom)/2
+       bokeh.models.glyphs.Quad(left=0, right=1, top=1, bottom=0, border_radius=0.6)  
+
 #-----------------------------------------------------------------------------
 # Dev API
 #-----------------------------------------------------------------------------
