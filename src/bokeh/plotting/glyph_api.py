@@ -674,6 +674,24 @@ Examples:
 
     @glyph_method(glyphs.Step)
     def step(self, *args: Any, **kwargs: Any) -> GlyphRenderer:
+        # REFACTORED CODE
+        # Handle missing values
+        processed_x = []
+        processed_y = []
+
+        x = args[0]
+        y = args[1]
+
+        for i in range(len(x)):
+            if i > 0 and np.isnan(y[i]):
+                # Handle missing value by duplicating the previous point
+                processed_x.extend([x[i - 1], x[i]])
+                processed_y.extend([y[i - 1], y[i]])
+            else:
+                processed_x.append(x[i])
+                processed_y.append(y[i])
+        # Call the original step function with processed data
+        self._glyphs.append(self._get_step_glyph(processed_x, processed_y, **kwargs))
         """
 Examples:
 

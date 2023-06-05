@@ -280,7 +280,12 @@ class ColumnDataSource(ColumnarDataSource):
 
         new_data: DataDict = {}
         for k, v in tmp_data.items():
-            new_data[k] = v
+            # new_data[k] = v
+            # REFACTOR CODE
+            if isinstance(v, np.ndarray):
+                new_data[k] = v.tolist()  # Convert numpy array to list
+            else:
+                new_data[k] = v
 
         return new_data
 
@@ -390,6 +395,11 @@ class ColumnDataSource(ColumnarDataSource):
             while f"Series {n}" in self.data:
                 n += 1
             name = f"Series {n}"
+
+        # REFACTORED CODE
+        if isinstance(data, np.ndarray):
+            data = data.tolist()  # Convert numpy array to list
+
         self.data[name] = data
         return name
 
